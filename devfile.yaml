@@ -4,4 +4,4 @@ metadata:
 components:
   - name: python
     container:
-      image: "public.ecr.aws/docker/library/python:latest"
+      image: "public.ecr.aws/docker/library/python:3.12"
