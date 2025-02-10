@@ -1,27 +1,7 @@
 schemaVersion: 2.2.2
-commands:
-- exec:
-    commandLine: pip install -r requirements.txt
-    component: py
-    group:
-      isDefault: true
-      kind: build
-    workingDir: ${PROJECT_SOURCE}
-  id: pip-install-requirements
-components:
-- container:
-    # image: registry.access.redhat.com/ubi9/python-39:1-1737460369
-    image: public.ecr.aws/docker/library/python:3.13.2-bookworm
-    mountSources: true
-    env:
-    - name: ENVIRONMENT
-      value: "development"
-  name: py
 metadata:
-  description: Python (version 3.9.x)
-  displayName: Python
-  icon: https://raw.githubusercontent.com/devfile-samples/devfile-stack-icons/main/python.svg
-  language: Python
-  name: api
-  projectType: Python
-  version: 2.2.0
+  name: python-dev
+components:
+  - name: python
+    container:
+      image: python:latest
