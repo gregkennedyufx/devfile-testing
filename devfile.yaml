@@ -1,7 +1,50 @@
-schemaVersion: 2.2.0
+# schemaVersion: 2.2.0
+# metadata:
+#    name: python-dev
+# components:
+#  - name: python
+#    container:
+#      image: "public.ecr.aws/docker/library/python:3.13.2-bookworm"
+
+
+schemaVersion: 2.0.0
 metadata:
-  name: python-dev
+  name: aws-universal
+  version: 1.0.1
+  displayName: AWS Universal
+  description: Stack with AWS Universal Tooling
+  tags: ["aws", "al2"]
+  projectType: "aws"
 components:
-  - name: python
+  - name: aws-runtime
     container:
-      image: "public.ecr.aws/docker/library/python:3.13.2-bookworm"
+      image: public.ecr.aws/aws-mde/universal-image:latest
+      mountSources: true
+      volumeMounts:
+        - name: docker-store
+          path: /var/lib/docker
+      env:
+        - name: "AWS_SECRET_ACCESS_KEY"
+          value: "FAKE_KEY"
+        - name: "AWS_ACCESS_KEY_ID"
+          value: "FAKE_ID"
+  - name: docker-store
+    volume:
+      size: 16Gi
+  - name: dynamodb
+    container:
+      image: amazon/dynamodb-local 
+      mountSources: false
+      endpoints:
+        - name: dynamo
+          targetPort: 8000
+          exposure: public
+commands:
+  - id: install
+    exec:
+      commandLine: python3 -m pip install -r requirements.txt
+      workingDir: /projects/api
+      component: aws-runtime
+events:
+  postStart:
+    - install
